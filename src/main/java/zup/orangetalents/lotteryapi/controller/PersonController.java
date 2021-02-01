@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import zup.orangetalents.lotteryapi.dto.request.PersonDTO;
 import zup.orangetalents.lotteryapi.dto.response.MessageResponseDTO;
+<<<<<<< HEAD
 import zup.orangetalents.lotteryapi.exception.PersonNotFoundedException;
+=======
+>>>>>>> 5350bbfcca6550ee0f35a37c8e4c5f42b6003b09
 import zup.orangetalents.lotteryapi.service.PersonService;
 
 import javax.validation.Valid;
@@ -25,6 +28,7 @@ public class PersonController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MessageResponseDTO createPerson(@RequestBody @Valid PersonDTO personDTO) {
+<<<<<<< HEAD
         return personService.createPersonWithRaffle(personDTO);
     }
 
@@ -36,5 +40,13 @@ public class PersonController {
     @GetMapping("/{id}") //PathVariable indica que a informação está sendo passada pela requisição http
     public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundedException {
         return personService.findById(id);
+=======
+        return personService.createPerson(personDTO);
+>>>>>>> 5350bbfcca6550ee0f35a37c8e4c5f42b6003b09
     }
+
+    /*@GetMapping
+    public List<PersonDTO> listAll(){
+        return personService.listAll();
+    }*/
 }

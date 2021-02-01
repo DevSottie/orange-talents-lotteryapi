@@ -20,6 +20,10 @@ public class Person {
     @Column(nullable = false)
     private String email;
 
+<<<<<<< HEAD
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+=======
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+>>>>>>> 5350bbfcca6550ee0f35a37c8e4c5f42b6003b09
     private List<Raffle> raffles;
 }
