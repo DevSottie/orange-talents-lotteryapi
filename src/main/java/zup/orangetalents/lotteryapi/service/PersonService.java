@@ -2,26 +2,60 @@ package zup.orangetalents.lotteryapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import zup.orangetalents.lotteryapi.dto.mapper.PersonMapperInterface;
+import zup.orangetalents.lotteryapi.dto.request.PersonDTO;
 import zup.orangetalents.lotteryapi.dto.response.MessageResponseDTO;
+import zup.orangetalents.lotteryapi.exception.PersonNotFoundedException;
 import zup.orangetalents.lotteryapi.model.Person;
-import zup.orangetalents.lotteryapi.repository.PersonRepository;
+import zup.orangetalents.lotteryapi.repository.PersonRepositoryInterface;
+import zup.orangetalents.lotteryapi.repository.RaffleRepositoryInterface;
+
+import java.util.Optional;
 
 @Service
 public class PersonService {
 
-    private PersonRepository personRepository;
+    private PersonRepositoryInterface personrepositoryInterface;
+    private RaffleRepositoryInterface raffleRepositoryInterface;
+
+    private final PersonMapperInterface personMapperInterface = PersonMapperInterface.INSTANCE;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
-        this.personRepository = personRepository;
+    public PersonService(PersonRepositoryInterface personrepositoryInterface) {
+        this.personrepositoryInterface = personrepositoryInterface;
     }
 
-    public MessageResponseDTO createPerson(Person person){
-        Person savedPerson = personRepository.save(person);
+    public MessageResponseDTO createPersonWithRaffle(PersonDTO personDTO) {
+
+        Person personToSave = personMapperInterface.toModel(personDTO);
+
+        Person savedPerson = personrepositoryInterface.save(personToSave);
         return MessageResponseDTO
                 .builder()
                 .message("Successful to create")
                 .build();
     }
+
+    public PersonDTO findById(Long id) throws PersonNotFoundedException {
+        Optional<Person> optionalPerson = personrepositoryInterface.findById(id);
+        if (optionalPerson.isEmpty()){
+            throw new PersonNotFoundedException(id);
+        }
+        return personMapperInterface.toDTO(optionalPerson.get());
+    }
+
+//    Teoricamente essa classe listaria todos os usuarios, mas n estou conseguindo fazer ela funcionar. vou seguir com o projeto
+    /*public List<PersonDTO> listAll(){//salva em uma lista todos os usuarios cadastrados
+        List<Person> allPeople = personrepositoryInterface.findAll();
+        System.out.println(allPeople.stream()
+                .map(personMapperInterface::toDTO)
+                .collect(Collectors.toList()));
+        return null;
+    }*/
+/*    public List<RaffleDTO> listRaffles(){
+        List<Raffle> allRafle = raffleRepositoryInterface.findAll();
+        return allRafle.stream()
+                .map(raffleMapperInterface::toDTO)
+                .collect(Collectors.toList());
+    }*/
 }
