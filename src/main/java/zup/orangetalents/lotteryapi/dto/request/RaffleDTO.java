@@ -12,6 +12,8 @@ public class RaffleDTO {
 
     private LocalDateTime birth_date = LocalDateTime.now();
 
+    private Integer raffle = codeDraw();
+
     private Integer codeDraw(){
         Random raffle = new Random();
         return raffle.nextInt(99999999);

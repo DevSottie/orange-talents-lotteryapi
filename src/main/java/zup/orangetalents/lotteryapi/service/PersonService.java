@@ -8,6 +8,9 @@ import zup.orangetalents.lotteryapi.dto.response.MessageResponseDTO;
 import zup.orangetalents.lotteryapi.model.Person;
 import zup.orangetalents.lotteryapi.repository.personrepositoryInterface;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PersonService {
 
@@ -29,5 +32,12 @@ public class PersonService {
                 .builder()
                 .message("Successful to create")
                 .build();
+    }
+
+    public List<PersonDTO> listAll(){//salva em uma lista todos os usuarios cadastrados
+        List<Person> allpeople = personrepositoryInterface.findAll();
+        return allpeople.stream()
+                .map(personMapperInterface::toDTO)
+                .collect(Collectors.toList());
     }
 }
