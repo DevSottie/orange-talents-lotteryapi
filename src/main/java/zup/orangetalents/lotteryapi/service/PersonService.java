@@ -2,23 +2,29 @@ package zup.orangetalents.lotteryapi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
+import zup.orangetalents.lotteryapi.dto.mapper.PersonMapperInterface;
+import zup.orangetalents.lotteryapi.dto.request.PersonDTO;
 import zup.orangetalents.lotteryapi.dto.response.MessageResponseDTO;
 import zup.orangetalents.lotteryapi.model.Person;
-import zup.orangetalents.lotteryapi.repository.PersonRepository;
+import zup.orangetalents.lotteryapi.repository.personrepositoryInterface;
 
 @Service
 public class PersonService {
 
-    private PersonRepository personRepository;
+    private personrepositoryInterface personrepositoryInterface;
+
+    private final PersonMapperInterface personMapperInterface = PersonMapperInterface.INSTANCE;
 
     @Autowired
-    public PersonService(PersonRepository personRepository) {
-        this.personRepository = personRepository;
+    public PersonService(personrepositoryInterface personrepositoryInterface) {
+        this.personrepositoryInterface = personrepositoryInterface;
     }
 
-    public MessageResponseDTO createPerson(Person person){
-        Person savedPerson = personRepository.save(person);
+    public MessageResponseDTO createPerson(PersonDTO personDTO) {
+
+        Person personToSave = personMapperInterface.toModel(personDTO);
+
+        Person savedPerson = personrepositoryInterface.save(personToSave);
         return MessageResponseDTO
                 .builder()
                 .message("Successful to create")
